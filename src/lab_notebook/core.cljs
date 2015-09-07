@@ -54,14 +54,15 @@
   (reify
     om/IInitState
     (init-state [this]
-      {})
+      {:editing? false})
     om/IRenderState
     (render-state [this state]
       (dom/div nil
         (apply dom/div nil
           (for [entry (:entries cursor)]
             (om/build item-view entry)))
-        (when (empty? (:entries cursor))
+        (when (or (:editing? state)
+                (empty? (:entries cursor)))
           (dom/div nil
             (dom/h3 nil "New entry")
             (om/build item-form {}
@@ -71,7 +72,8 @@
                                      ((fnil conj []) entries
                                       {:summary summary
                                        :date-time date-time
-                                       :notes notes}))))}})))))))
+                                       :notes notes})))
+                                 (om/set-state! component :editing? false))}})))))))
 
 (defn app-container [cursor component]
   (reify
