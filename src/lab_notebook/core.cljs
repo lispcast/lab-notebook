@@ -58,6 +58,10 @@
     om/IRenderState
     (render-state [this state]
       (dom/div nil
+        (dom/button #js {:className "btn btn-primary"
+                         :onClick (fn [e]
+                                    (om/set-state! component :editing? true))}
+          "New entry")
         (apply dom/div nil
           (for [entry (:entries cursor)]
             (om/build item-view entry)))
