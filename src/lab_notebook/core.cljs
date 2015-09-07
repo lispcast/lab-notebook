@@ -8,7 +8,7 @@
   (reify
     om/IRender
     (render [this]
-      (dom/div nil
+      (dom/div #js {:style #js {:marginTop "2em"}}
         (dom/div nil (:summary cursor))
         (dom/div nil (:date-time cursor))
         (dom/div nil (:notes cursor))))))
