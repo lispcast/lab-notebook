@@ -39,7 +39,13 @@
                                     (.preventDefault e)
                                     (when-let [on-save (:on-save options)]
                                       (on-save (:summary state) (:date-time state) (:notes state))))}
-          "Save")))))
+          "Save")
+        (dom/button #js {:className "btn btn-primary"
+                         :onClick (fn [e]
+                                    (.preventDefault e)
+                                    (when-let [on-cancel (:on-cancel options)]
+                                      (on-cancel)))}
+          "Cancel")))))
 
 (defn item-view [cursor component options]
   (reify
@@ -57,7 +63,9 @@
                                                         :summary summary
                                                         :date-time date-time
                                                         :notes notes)))
-                               (om/set-state! component :editing? false))}}))
+                               (om/set-state! component :editing? false))
+                    :on-cancel (fn []
+                                 (om/set-state! component :editing? false))}}))
         (dom/div #js {:style #js {:marginTop "2em"}}
           (dom/button #js {:className "btn btn-primary"
                            :onClick (fn [e]
@@ -105,7 +113,9 @@
                                       {:summary summary
                                        :date-time date-time
                                        :notes notes})))
-                                 (om/set-state! component :editing? false))}})))))))
+                                 (om/set-state! component :editing? false))
+                      :on-cancel (fn []
+                                   (om/set-state! component :editing? false))}})))))))
 
 (defn app-container [cursor component]
   (reify
