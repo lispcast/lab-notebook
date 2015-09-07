@@ -17,9 +17,23 @@
   (reify
     om/IRender
     (render [this]
-      (apply dom/div nil
-        (for [entry (:entries cursor)]
-          (om/build item-view entry))))))
+      (dom/div nil
+        (apply dom/div nil
+          (for [entry (:entries cursor)]
+            (om/build item-view entry)))
+        (dom/div nil
+          (dom/h3 nil "New entry")
+          (dom/form #js {:className "form-horizontal"}
+            (dom/input #js {:type "text"
+                            :className "form-control"
+                            :placeholder "Summary"})
+            (dom/input #js {:type "text"
+                            :className "form-control"
+                            :placeholder "Time"})
+            (dom/textarea #js {:className "form-control":placeholder "Notes"
+                               :rows "5"})
+            (dom/button #js {:className "btn btn-primary"}
+              "Save")))))))
 
 (defn app-container [cursor component]
   (reify
