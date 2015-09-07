@@ -41,7 +41,7 @@
                                       (on-save (:summary state) (:date-time state) (:notes state))))}
           "Save")))))
 
-(defn item-view [cursor component]
+(defn item-view [cursor component options]
   (reify
     om/IInitState
     (init-state [this]
@@ -63,9 +63,18 @@
                            :onClick (fn [e]
                                       (om/set-state! component :editing? true))}
             "Edit")
+          (dom/button #js {:className "btn btn-primary"
+                           :onClick (fn [e]
+                                      (.preventDefault e)
+                                      (when-let [on-delete (:on-delete options)]
+                                        (on-delete)))}
+            "Delete")
           (dom/div nil (:summary cursor))
           (dom/div nil (:date-time cursor))
           (dom/div nil (:notes cursor)))))))
+
+(defn delete [v i]
+  (into (subvec v 0 i) (subvec v (inc i))))
 
 (defn item-table [cursor component]
   (reify
@@ -80,8 +89,10 @@
                                     (om/set-state! component :editing? true))}
           "New entry")
         (apply dom/div nil
-          (for [entry (:entries cursor)]
-            (om/build item-view entry)))
+          (for [[i entry] (map vector (range) (:entries cursor))]
+            (om/build item-view entry
+              {:opts {:on-delete (fn []
+                                   (om/transact! cursor :entries #(delete % i)))}})))
         (when (or (:editing? state)
                 (empty? (:entries cursor)))
           (dom/div nil
