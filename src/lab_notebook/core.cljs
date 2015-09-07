@@ -61,16 +61,17 @@
         (apply dom/div nil
           (for [entry (:entries cursor)]
             (om/build item-view entry)))
-        (dom/div nil
-          (dom/h3 nil "New entry")
-          (om/build item-form {}
-            {:opts {:on-save (fn [summary date-time notes]
-                               (om/transact! cursor :entries
-                                 (fn [entries]
-                                   ((fnil conj []) entries
-                                    {:summary summary
-                                     :date-time date-time
-                                     :notes notes}))))}}))))))
+        (when (empty? (:entries cursor))
+          (dom/div nil
+            (dom/h3 nil "New entry")
+            (om/build item-form {}
+              {:opts {:on-save (fn [summary date-time notes]
+                                 (om/transact! cursor :entries
+                                   (fn [entries]
+                                     ((fnil conj []) entries
+                                      {:summary summary
+                                       :date-time date-time
+                                       :notes notes}))))}})))))))
 
 (defn app-container [cursor component]
   (reify
