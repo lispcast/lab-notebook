@@ -44,7 +44,10 @@
                          :onClick (fn [e]
                                     (.preventDefault e)
                                     (when-let [on-cancel (:on-cancel options)]
-                                      (on-cancel)))}
+                                      (on-cancel))
+                                    (om/set-state! component {:summary (get cursor :summary "")
+                                                              :date-time (get cursor :date-time "")
+                                                              :notes (get cursor :notes "")}))}
           "Cancel")))))
 
 (defn item-view [cursor component options]
