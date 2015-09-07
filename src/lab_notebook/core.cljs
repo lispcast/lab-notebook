@@ -32,7 +32,15 @@
                             :placeholder "Time"})
             (dom/textarea #js {:className "form-control":placeholder "Notes"
                                :rows "5"})
-            (dom/button #js {:className "btn btn-primary"}
+            (dom/button #js {:className "btn btn-primary"
+                             :onClick (fn [e]
+                                        (.preventDefault e)
+                                        (om/transact! cursor :entries
+                                          (fn [entries]
+                                            ((fnil conj []) entries
+                                             {:summary "summary"
+                                              :date-time "date-time"
+                                              :notes "notes"}))))}
               "Save")))))))
 
 (defn app-container [cursor component]
