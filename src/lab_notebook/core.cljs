@@ -15,8 +15,13 @@
 
 (defn item-table [cursor component]
   (reify
-    om/IRender
-    (render [this]
+    om/IInitState
+    (init-state [this]
+      {:summary ""
+       :date-time ""
+       :notes ""})
+    om/IRenderState
+    (render-state [this state]
       (dom/div nil
         (apply dom/div nil
           (for [entry (:entries cursor)]
@@ -26,11 +31,14 @@
           (dom/form #js {:className "form-horizontal"}
             (dom/input #js {:type "text"
                             :className "form-control"
+                            :value (:summary state)
                             :placeholder "Summary"})
             (dom/input #js {:type "text"
                             :className "form-control"
+                            :value (:date-time state)
                             :placeholder "Time"})
             (dom/textarea #js {:className "form-control":placeholder "Notes"
+                               :value (:notes state)
                                :rows "5"})
             (dom/button #js {:className "btn btn-primary"
                              :onClick (fn [e]
