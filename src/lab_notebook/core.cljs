@@ -4,6 +4,15 @@
 
 (defonce appstate (atom {}))
 
+(defn item-view [cursor component]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/div nil
+        (dom/div nil (:summary cursor))
+        (dom/div nil (:date-time cursor))
+        (dom/div nil (:notes cursor))))))
+
 (defn app-container [cursor component]
   (reify
     om/IRender
@@ -12,10 +21,7 @@
         (dom/h1 nil "Lab notebook")
         nil
         (for [entry (:entries cursor)]
-          (dom/div nil
-            (dom/div nil (:summary entry))
-            (dom/div nil (:date-time entry))
-            (dom/div nil (:notes entry))))))))
+          (om/build item-view entry))))))
 
 (om/root app-container appstate
   {:target (. js/document (getElementById "app"))})
