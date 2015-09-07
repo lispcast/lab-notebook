@@ -11,8 +11,11 @@
       (apply dom/div nil
         (dom/h1 nil "Lab notebook")
         nil
-        (for [x (range 10)]
-          (str x " "))))))
+        (for [entry (:entries cursor)]
+          (dom/div nil
+            (dom/div nil (:summary entry))
+            (dom/div nil (:date-time entry))
+            (dom/div nil (:notes entry))))))))
 
 (om/root app-container appstate
   {:target (. js/document (getElementById "app"))})
