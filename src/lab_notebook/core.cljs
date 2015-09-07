@@ -43,9 +43,16 @@
 
 (defn item-view [cursor component]
   (reify
-    om/IRender
-    (render [this]
+    om/IInitState
+    (init-state [this]
+      {:editing? false})
+    om/IRenderState
+    (render-state [this state]
       (dom/div #js {:style #js {:marginTop "2em"}}
+        (dom/button #js {:className "btn btn-primary"
+                         :onClick (fn [e]
+                                    (om/set-state! component :editing? true))}
+          "Edit")
         (dom/div nil (:summary cursor))
         (dom/div nil (:date-time cursor))
         (dom/div nil (:notes cursor))))))
