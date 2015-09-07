@@ -8,9 +8,11 @@
   (reify
     om/IRender
     (render [this]
-      (dom/div nil
+      (apply dom/div nil
         (dom/h1 nil "Lab notebook")
-        (:message cursor)))))
+        nil
+        (for [x (range 10)]
+          (str x " "))))))
 
 (om/root app-container appstate
   {:target (. js/document (getElementById "app"))})
