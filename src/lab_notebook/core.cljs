@@ -32,13 +32,22 @@
             (dom/input #js {:type "text"
                             :className "form-control"
                             :value (:summary state)
+                            :onChange (fn [e]
+                                        (om/set-state! component :summary
+                                          (-> e .-target .-value)))
                             :placeholder "Summary"})
             (dom/input #js {:type "text"
                             :className "form-control"
                             :value (:date-time state)
+                            :onChange (fn [e]
+                                        (om/set-state! component :date-time
+                                          (-> e .-target .-value)))
                             :placeholder "Time"})
             (dom/textarea #js {:className "form-control":placeholder "Notes"
                                :value (:notes state)
+                               :onChange (fn [e]
+                                           (om/set-state! component :notes
+                                             (-> e .-target .-value)))
                                :rows "5"})
             (dom/button #js {:className "btn btn-primary"
                              :onClick (fn [e]
@@ -46,9 +55,9 @@
                                         (om/transact! cursor :entries
                                           (fn [entries]
                                             ((fnil conj []) entries
-                                             {:summary "summary"
-                                              :date-time "date-time"
-                                              :notes "notes"}))))}
+                                             {:summary (:summary state)
+                                              :date-time (:date-time state)
+                                              :notes (:notes state)}))))}
               "Save")))))))
 
 (defn app-container [cursor component]
