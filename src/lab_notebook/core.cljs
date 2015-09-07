@@ -13,15 +13,21 @@
         (dom/div nil (:date-time cursor))
         (dom/div nil (:notes cursor))))))
 
-(defn app-container [cursor component]
+(defn item-table [cursor component]
   (reify
     om/IRender
     (render [this]
       (apply dom/div nil
-        (dom/h1 nil "Lab notebook")
-        nil
         (for [entry (:entries cursor)]
           (om/build item-view entry))))))
+
+(defn app-container [cursor component]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/div nil
+        (dom/h1 nil "Lab notebook")
+        (om/build item-table cursor)))))
 
 (om/root app-container appstate
   {:target (. js/document (getElementById "app"))})
