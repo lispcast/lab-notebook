@@ -8,7 +8,7 @@
   (reify
     om/IRender
     (render [this]
-      (dom/div nil "Hello!"))))
+      (dom/div nil (:message cursor)))))
 
 (om/root app-container appstate
   {:target (. js/document (getElementById "app"))})
