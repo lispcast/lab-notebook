@@ -48,14 +48,24 @@
       {:editing? false})
     om/IRenderState
     (render-state [this state]
-      (dom/div #js {:style #js {:marginTop "2em"}}
-        (dom/button #js {:className "btn btn-primary"
-                         :onClick (fn [e]
-                                    (om/set-state! component :editing? true))}
-          "Edit")
-        (dom/div nil (:summary cursor))
-        (dom/div nil (:date-time cursor))
-        (dom/div nil (:notes cursor))))))
+      (if (:editing? state)
+        (dom/div #js {:style #js {:marginTop "2em"}}
+          (om/build item-form cursor
+            {:opts {:on-save (fn [summary date-time notes]
+                               (om/transact! cursor (fn [entry]
+                                                      (assoc entry
+                                                        :summary summary
+                                                        :date-time date-time
+                                                        :notes notes)))
+                               (om/set-state! component :editing? false))}}))
+        (dom/div #js {:style #js {:marginTop "2em"}}
+          (dom/button #js {:className "btn btn-primary"
+                           :onClick (fn [e]
+                                      (om/set-state! component :editing? true))}
+            "Edit")
+          (dom/div nil (:summary cursor))
+          (dom/div nil (:date-time cursor))
+          (dom/div nil (:notes cursor)))))))
 
 (defn item-table [cursor component]
   (reify
