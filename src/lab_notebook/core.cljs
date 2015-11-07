@@ -4,6 +4,18 @@
 
 (defonce appstate (atom {}))
 
+(defonce apphistory (atom [@appstate]))
+
+(add-watch appstate :history
+  (fn [_ _ _ new-state]
+    (when-not (= (last @apphistory) new-state)
+      (swap! apphistory conj new-state))))
+
+(defn undo []
+  (when (> (count @apphistory) 1)
+    (let [new-history (swap! apphistory pop)]
+      (reset! appstate (last new-history)))))
+
 (defn item-form [cursor component options]
   (reify
     om/IInitState
@@ -126,7 +138,12 @@
     (render [this]
       (dom/div nil
         (dom/h1 nil "Lab notebook")
-        (om/build item-table cursor)))))
+        (dom/button #js {:className "btn btn-warning"
+                         :onClick undo}
+          "Undo")
+        (dom/span nil (str (count @apphistory)))
+        (dom/div #js {:style #js {:marginTop "12px"}}
+          (om/build item-table cursor))))))
 
 (om/root app-container appstate
   {:target (. js/document (getElementById "app"))})
