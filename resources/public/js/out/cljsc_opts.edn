@@ -1,1 +1,0 @@
-{:main lab-notebook.core, :output-dir "resources/public/js/out", :asset-path "js/out", :optimizations :none, :output-to "resources/public/js/main.js", :source-map-timestamp true, :preloads [figwheel.connect], :external-config #:figwheel{:config {:build-id "dev", :websocket-url "ws://localhost:3449/figwheel-ws"}}}
