@@ -7,11 +7,12 @@ ClojureScript and Om][course].
 
 ## Usage
 
-Run `lein figwheel` to start the compiler. Open `index.html` in your
-browser.
+Run `lein figwheel` to start the compiler. Open
+http://0.0.0.0:3449 in your browser.
 
-At the terminal, run `git tag -l` to see a list of the available
-tags. `git checkout {tag}` will navigate to that tag.
+At the terminal, run `git branch` to see a list of the
+available branches. `git checkout branch` will navigate to
+that branch.
 
 ## License
 
