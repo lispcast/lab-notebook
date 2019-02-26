@@ -12,3 +12,5 @@ pom.xml.asc
 *-init.clj
 figwheel_server.log
 .rebel_readline_history
+resources/public/js/out/
+resources/public/js/main.js
